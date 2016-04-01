@@ -29,39 +29,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package engine;
+package client;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
+import java.math.BigDecimal;
 import compute.Compute;
-import compute.Task;
 
-public class ComputeEngine implements Compute {
-
-    public ComputeEngine() {
-        super();
-    }
-
-    public <T> T executeTask(Task<T> t) {
-        return t.execute();
-    }
-
-    public static void main(String[] args) {
+public class ComputePi {
+    public static void main(String args[]) {
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
         try {
             String name = "Compute";
-            Compute engine = new ComputeEngine();
-            Compute stub =
-                (Compute) UnicastRemoteObject.exportObject(engine, 0);
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind(name, stub);
-            System.out.println("ComputeEngine bound");
+            Registry registry = LocateRegistry.getRegistry(args[0]);
+            Compute comp = (Compute) registry.lookup(name);
+            Pi task = new Pi(Integer.parseInt(args[1]));
+            BigDecimal pi = comp.executeTask(task);
+            System.out.println(pi);
         } catch (Exception e) {
-            System.err.println("ComputeEngine exception:");
+            System.err.println("ComputePi exception:");
             e.printStackTrace();
         }
-    }
+    }    
 }
