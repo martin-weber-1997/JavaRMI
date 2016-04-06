@@ -1,7 +1,9 @@
 package calculation;
 
+import java.math.BigDecimal;
+
 public interface Calculation {
 
 	public void calculate();
-	public void getResult();
+	public BigDecimal getResult();
 }
