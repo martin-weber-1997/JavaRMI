@@ -21,7 +21,6 @@ public class PrintCallback<T> implements Callback<T> {
 	@Override
 	public void callback(T value) throws RemoteException {
 		System.out.println(value);
-		
 	}
 
 }
